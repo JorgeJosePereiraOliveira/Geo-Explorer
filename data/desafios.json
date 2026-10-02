@@ -1,0 +1,76 @@
+{
+  "desafios": [
+    {
+      "tecnologia": "python",
+      "nivel": "iniciante",
+      "titulo": "Calculadora de IMC",
+      "descricao": "Crie uma função `calcular_imc(peso: float, altura: float) -> str` que receba peso (kg) e altura (m) e retorne a classificação do IMC como string (ex: 'Normal', 'Sobrepeso', 'Obesidade').",
+      "exemplo_entrada": "calcular_imc(70, 1.75)",
+      "exemplo_saida": "'Normal'",
+      "dicas": ["IMC = peso / (altura ** 2)", "Abaixo de 18.5 = Abaixo do peso", "18.5–24.9 = Normal", "25–29.9 = Sobrepeso", "30+ = Obesidade"]
+    },
+    {
+      "tecnologia": "python",
+      "nivel": "intermediario",
+      "titulo": "Analisador de Texto",
+      "descricao": "Implemente uma função `analisar_texto(texto: str) -> dict` que retorne um dicionário com: 'palavras' (contagem), 'caracteres' (sem espaços), 'palavra_mais_frequente' e 'frases' (contagem por '.').",
+      "exemplo_entrada": "analisar_texto('Python é incrível. Python é poderoso.')",
+      "exemplo_saida": "{'palavras': 6, 'caracteres': 31, 'palavra_mais_frequente': 'Python', 'frases': 2}",
+      "dicas": ["Use str.split() para palavras", "Use collections.Counter para frequência", "Separe por '.' para frases"]
+    },
+    {
+      "tecnologia": "python",
+      "nivel": "avancado",
+      "titulo": "Decorador de Cache",
+      "descricao": "Implemente um decorador `@cache_resultado(ttl: int)` que armazene o resultado de funções por `ttl` segundos. Se chamada dentro do TTL, retorne o cache; caso contrário, recalcule.",
+      "exemplo_entrada": "@cache_resultado(ttl=5)\ndef somar(a, b): return a + b",
+      "exemplo_saida": "# Primeira chamada: calcula. Segunda (< 5s): usa cache.",
+      "dicas": ["Use time.time() para controle de tempo", "Armazene (resultado, timestamp) por chave de argumentos", "functools.wraps preserva metadados da função original"]
+    },
+    {
+      "tecnologia": "javascript",
+      "nivel": "iniciante",
+      "titulo": "FizzBuzz Funcional",
+      "descricao": "Escreva uma função `fizzBuzz(n)` que retorne um array de 1 até n, substituindo múltiplos de 3 por 'Fizz', de 5 por 'Buzz' e de ambos por 'FizzBuzz'.",
+      "exemplo_entrada": "fizzBuzz(15)",
+      "exemplo_saida": "[1, 2, 'Fizz', 4, 'Buzz', 'Fizz', 7, 8, 'Fizz', 'Buzz', 11, 'Fizz', 13, 14, 'FizzBuzz']",
+      "dicas": ["Use Array.from({length: n}) para criar o array", "Verifique múltiplo de 15 antes de 3 e 5"]
+    },
+    {
+      "tecnologia": "javascript",
+      "nivel": "intermediario",
+      "titulo": "Debounce",
+      "descricao": "Implemente uma função `debounce(fn, delay)` que retorne uma versão da função `fn` que só é executada após `delay` ms sem novas chamadas.",
+      "exemplo_entrada": "const buscar = debounce((q) => console.log(q), 300)",
+      "exemplo_saida": "// Chamadas rápidas ignoradas; só a última executa após 300ms",
+      "dicas": ["Use setTimeout e clearTimeout", "O timer deve ser reiniciado a cada nova chamada"]
+    },
+    {
+      "tecnologia": "typescript",
+      "nivel": "iniciante",
+      "titulo": "Generic Stack",
+      "descricao": "Implemente uma classe genérica `Stack<T>` com métodos: `push(item: T): void`, `pop(): T | undefined`, `peek(): T | undefined` e `isEmpty(): boolean`.",
+      "exemplo_entrada": "const s = new Stack<number>(); s.push(1); s.push(2); s.pop();",
+      "exemplo_saida": "// pop() retorna 2, peek() retorna 1",
+      "dicas": ["Use um array privado interno", "Generics garantem tipagem em tempo de compilação"]
+    },
+    {
+      "tecnologia": "sql",
+      "nivel": "iniciante",
+      "titulo": "Top 3 Vendedores",
+      "descricao": "Dada a tabela `vendas(id, vendedor, valor, data)`, escreva uma query que retorne os 3 vendedores com maior valor total de vendas no mês atual.",
+      "exemplo_entrada": "SELECT ...",
+      "exemplo_saida": "vendedor | total\nAna      | 15000\nBob      | 12000\nCarla    | 9500",
+      "dicas": ["Use SUM + GROUP BY", "Filtre com WHERE MONTH(data) = MONTH(NOW())", "Use ORDER BY total DESC LIMIT 3"]
+    },
+    {
+      "tecnologia": "docker",
+      "nivel": "iniciante",
+      "titulo": "Containerize um App Python",
+      "descricao": "Escreva um Dockerfile para uma aplicação Flask simples (app.py). A imagem deve: usar python:3.11-slim, copiar o código, instalar dependências de requirements.txt e expor a porta 5000.",
+      "exemplo_entrada": "FROM ...",
+      "exemplo_saida": "# Imagem buildável com: docker build -t meu-app .",
+      "dicas": ["Use WORKDIR /app", "COPY requirements.txt antes do código (cache de layers)", "CMD [\"python\", \"app.py\"]"]
+    }
+  ]
+}

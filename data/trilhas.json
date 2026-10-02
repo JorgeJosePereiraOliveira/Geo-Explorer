@@ -1,0 +1,74 @@
+{
+  "trilhas": [
+    {
+      "id": "python",
+      "nome": "Python para Iniciantes",
+      "descricao": "Aprenda Python do zero com foco em lógica, estruturas de dados e automação.",
+      "nivel": "iniciante",
+      "carga_horaria": 40,
+      "modulos": [
+        { "ordem": 1, "titulo": "Introdução ao Python", "topicos": ["Variáveis e tipos", "Entrada e saída", "Operadores"] },
+        { "ordem": 2, "titulo": "Estruturas de Controle", "topicos": ["if/elif/else", "for e while", "break e continue"] },
+        { "ordem": 3, "titulo": "Funções", "topicos": ["Definição de funções", "Parâmetros e retorno", "Escopo"] },
+        { "ordem": 4, "titulo": "Estruturas de Dados", "topicos": ["Listas", "Dicionários", "Tuplas e sets"] },
+        { "ordem": 5, "titulo": "Módulos e Arquivos", "topicos": ["Importações", "Leitura e escrita de arquivos", "Bibliotecas padrão"] }
+      ]
+    },
+    {
+      "id": "javascript",
+      "nome": "JavaScript Moderno",
+      "descricao": "Domine JavaScript ES6+ com foco em web, async/await e manipulação do DOM.",
+      "nivel": "intermediario",
+      "carga_horaria": 50,
+      "modulos": [
+        { "ordem": 1, "titulo": "Fundamentos ES6+", "topicos": ["let/const", "Arrow functions", "Template literals"] },
+        { "ordem": 2, "titulo": "Arrays e Objetos Avançados", "topicos": ["map/filter/reduce", "Destructuring", "Spread/rest"] },
+        { "ordem": 3, "titulo": "Assincronismo", "topicos": ["Callbacks", "Promises", "async/await"] },
+        { "ordem": 4, "titulo": "DOM e Eventos", "topicos": ["Seleção de elementos", "Eventos", "Manipulação do DOM"] },
+        { "ordem": 5, "titulo": "Módulos", "topicos": ["import/export", "Bundlers", "NPM basics"] }
+      ]
+    },
+    {
+      "id": "typescript",
+      "nome": "TypeScript Essencial",
+      "descricao": "Adicione tipagem estática ao JavaScript e melhore a qualidade do seu código.",
+      "nivel": "intermediario",
+      "carga_horaria": 35,
+      "modulos": [
+        { "ordem": 1, "titulo": "Tipos Básicos", "topicos": ["string, number, boolean", "Arrays e tuplas", "Enums"] },
+        { "ordem": 2, "titulo": "Interfaces e Types", "topicos": ["Interfaces", "Type aliases", "Union e intersection"] },
+        { "ordem": 3, "titulo": "Generics", "topicos": ["Funções genéricas", "Classes genéricas", "Constraints"] },
+        { "ordem": 4, "titulo": "Classes e OOP", "topicos": ["Classes", "Herança", "Modificadores de acesso"] },
+        { "ordem": 5, "titulo": "TypeScript no Mundo Real", "topicos": ["tsconfig", "Integração com frameworks", "Tipos utilitários"] }
+      ]
+    },
+    {
+      "id": "sql",
+      "nome": "SQL e Bancos de Dados",
+      "descricao": "Aprenda a consultar, manipular e modelar dados com SQL.",
+      "nivel": "iniciante",
+      "carga_horaria": 30,
+      "modulos": [
+        { "ordem": 1, "titulo": "Fundamentos SQL", "topicos": ["SELECT", "WHERE", "ORDER BY"] },
+        { "ordem": 2, "titulo": "Manipulação de Dados", "topicos": ["INSERT", "UPDATE", "DELETE"] },
+        { "ordem": 3, "titulo": "Joins e Relacionamentos", "topicos": ["INNER JOIN", "LEFT/RIGHT JOIN", "Chaves estrangeiras"] },
+        { "ordem": 4, "titulo": "Funções e Agregação", "topicos": ["COUNT/SUM/AVG", "GROUP BY", "HAVING"] },
+        { "ordem": 5, "titulo": "Modelagem", "topicos": ["Normalização", "Diagramas ER", "Índices"] }
+      ]
+    },
+    {
+      "id": "docker",
+      "nome": "Docker e Contêineres",
+      "descricao": "Containerize suas aplicações e entenda o ecossistema Docker.",
+      "nivel": "intermediario",
+      "carga_horaria": 25,
+      "modulos": [
+        { "ordem": 1, "titulo": "Conceitos de Contêineres", "topicos": ["VMs vs Contêineres", "Imagens e contêineres", "Docker Hub"] },
+        { "ordem": 2, "titulo": "Dockerfile", "topicos": ["FROM, RUN, COPY", "CMD e ENTRYPOINT", "Boas práticas"] },
+        { "ordem": 3, "titulo": "Docker Compose", "topicos": ["Serviços", "Volumes", "Redes"] },
+        { "ordem": 4, "titulo": "Orquestração Básica", "topicos": ["Escalabilidade", "Health checks", "Logs"] },
+        { "ordem": 5, "titulo": "CI/CD com Docker", "topicos": ["Build em pipelines", "Registry privado", "Deploy básico"] }
+      ]
+    }
+  ]
+}
