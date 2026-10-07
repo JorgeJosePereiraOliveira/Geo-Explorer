@@ -71,6 +71,33 @@
       "exemplo_entrada": "FROM ...",
       "exemplo_saida": "# Imagem buildável com: docker build -t meu-app .",
       "dicas": ["Use WORKDIR /app", "COPY requirements.txt antes do código (cache de layers)", "CMD [\"python\", \"app.py\"]"]
+    },
+    {
+      "tecnologia": "java",
+      "nivel": "iniciante",
+      "titulo": "Calculadora de Média",
+      "descricao": "Crie uma classe `CalculadoraMedia` com um método estático `calcularMedia(double[] notas) -> double` que receba um array de notas e retorne a média aritmética. Deve lançar `IllegalArgumentException` se o array for nulo ou vazio.",
+      "exemplo_entrada": "CalculadoraMedia.calcularMedia(new double[]{7.0, 8.5, 9.0})",
+      "exemplo_saida": "8.166666666666666",
+      "dicas": ["Some todos os elementos com um loop for-each", "Divida pelo comprimento do array (notas.length)", "Verifique notas == null || notas.length == 0 antes de processar"]
+    },
+    {
+      "tecnologia": "java",
+      "nivel": "intermediario",
+      "titulo": "Sistema de Banco Simples com OOP",
+      "descricao": "Implemente as classes `ContaBancaria` (atributos: `titular`, `saldo`) e `ContaCorrente extends ContaBancaria` (atributo: `limite`). `ContaBancaria` deve ter métodos `depositar(double valor)`, `sacar(double valor)` e `getSaldo()`. `ContaCorrente` sobrescreve `sacar()` para permitir saldo negativo até o limite.",
+      "exemplo_entrada": "ContaCorrente cc = new ContaCorrente(\"Ana\", 500.0, 200.0);\ncc.depositar(100);\ncc.sacar(750);",
+      "exemplo_saida": "// getSaldo() retorna -150.0 (usou R$50 do limite)",
+      "dicas": ["Use `extends` para herança", "Sobrescreva `sacar()` em ContaCorrente com `@Override`", "Valide se `saldo - valor >= -limite` antes de permitir o saque"]
+    },
+    {
+      "tecnologia": "java",
+      "nivel": "avancado",
+      "titulo": "Implementar um Pool de Threads",
+      "descricao": "Implemente a classe `SimpleThreadPool` com um pool de N threads fixas que processam tarefas de uma fila (`BlockingQueue<Runnable>`). A classe deve ter os métodos `submit(Runnable task)` para adicionar tarefas e `shutdown()` para encerrar todas as threads graciosamente (aguardando tarefas pendentes).",
+      "exemplo_entrada": "SimpleThreadPool pool = new SimpleThreadPool(4);\npool.submit(() -> System.out.println(\"Tarefa 1\"));\npool.shutdown();",
+      "exemplo_saida": "// 4 threads consomem tarefas em paralelo; shutdown aguarda conclusão",
+      "dicas": ["Use `LinkedBlockingQueue<Runnable>` como fila interna", "Cada thread worker executa `while (!shutdown) { queue.take().run(); }` em loop", "Em `shutdown()`, use um flag `volatile boolean` e chame `thread.join()` para cada thread", "Trate `InterruptedException` restaurando o interrupt com `Thread.currentThread().interrupt()`"]
     }
   ]
 }

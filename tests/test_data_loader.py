@@ -17,15 +17,50 @@ class TestCarregarTrilhas:
         trilhas = carregar_trilhas()
         assert len(trilhas) > 0
 
+    def test_possui_pelo_menos_30_trilhas(self):
+        assert len(carregar_trilhas()) >= 30
+
     def test_cada_trilha_tem_campos_obrigatorios(self):
         campos = {"id", "nome", "descricao", "nivel", "carga_horaria", "modulos"}
         for trilha in carregar_trilhas():
             assert campos.issubset(trilha.keys()), f"Campos faltando em: {trilha['id']}"
 
+    def test_cada_trilha_tem_campos_novos(self):
+        """Valida os campos estendidos adicionados na expansão DIO."""
+        campos_novos = {"tecnologia", "xp_total", "badges", "promocao", "vitalicio", "lives"}
+        for trilha in carregar_trilhas():
+            assert campos_novos.issubset(trilha.keys()), f"Campos novos faltando em: {trilha['id']}"
+
+    def test_xp_total_e_inteiro_positivo(self):
+        for trilha in carregar_trilhas():
+            assert isinstance(trilha["xp_total"], int) and trilha["xp_total"] > 0
+
+    def test_badges_tem_pelo_menos_um_item(self):
+        for trilha in carregar_trilhas():
+            assert isinstance(trilha["badges"], list) and len(trilha["badges"]) >= 1
+
+    def test_promocao_e_bool(self):
+        for trilha in carregar_trilhas():
+            assert isinstance(trilha["promocao"], bool)
+
+    def test_vitalicio_e_bool(self):
+        for trilha in carregar_trilhas():
+            assert isinstance(trilha["vitalicio"], bool)
+
+    def test_lives_e_inteiro_nao_negativo(self):
+        for trilha in carregar_trilhas():
+            assert isinstance(trilha["lives"], int) and trilha["lives"] >= 0
+
     def test_cada_modulo_tem_campos_obrigatorios(self):
         for trilha in carregar_trilhas():
             for modulo in trilha["modulos"]:
                 assert {"ordem", "titulo", "topicos"}.issubset(modulo.keys())
+
+    def test_trilhas_java_existem(self):
+        ids = {t["id"] for t in carregar_trilhas()}
+        assert "java_basico" in ids
+        assert "java_intermediario" in ids
+        assert "java_avancado" in ids
 
 
 class TestCarregarDesafios:

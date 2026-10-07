@@ -1,0 +1,15 @@
+﻿# Dependencias de pacotes
+node_modules/
+
+# Variaveis de ambiente
+.env
+.env.*
+
+# Cache de progresso gerado em runtime
+data/cache-progresso/
+
+# Certificados emitidos (artefatos gerados)
+docs/certificados-emitidos/
+
+# Arquivos temporarios
+*.tmp

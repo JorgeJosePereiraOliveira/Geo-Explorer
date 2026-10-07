@@ -30,3 +30,9 @@ Thumbs.db
 
 # Credentials (NEVER commit)
 .git-credentials
+
+# Artefatos gerados pelos testes
+tests/resultados_java.txt
+
+# Artefatos gerados pelos testes
+tests/resultados_java.txt

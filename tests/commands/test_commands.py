@@ -24,6 +24,28 @@ class TestComandoTrilha:
             resultado = exibir_trilha(tech)
             assert resultado is not None, f"Trilha '{tech}' deveria existir"
 
+    def test_trilha_java_basico(self):
+        resultado = exibir_trilha("java_basico")
+        assert resultado is not None
+        assert resultado["id"] == "java_basico"
+
+    def test_trilha_java_intermediario(self):
+        resultado = exibir_trilha("java_intermediario")
+        assert resultado is not None
+
+    def test_trilha_java_avancado(self):
+        resultado = exibir_trilha("java_avancado")
+        assert resultado is not None
+
+    def test_trilha_retorna_campos_novos(self):
+        resultado = exibir_trilha("java_basico")
+        assert resultado is not None
+        assert "xp_total" in resultado
+        assert "badges" in resultado
+        assert "promocao" in resultado
+        assert "vitalicio" in resultado
+        assert "lives" in resultado
+
 
 class TestComandoDesafio:
     def test_retorna_desafio_valido(self):
@@ -42,6 +64,20 @@ class TestComandoDesafio:
 
     def test_desafio_python_avancado_existe(self):
         resultado = exibir_desafio("python", "avancado")
+        assert resultado is not None
+
+    def test_desafio_java_iniciante(self):
+        resultado = exibir_desafio("java", "iniciante")
+        assert resultado is not None
+        assert resultado["tecnologia"] == "java"
+        assert resultado["nivel"] == "iniciante"
+
+    def test_desafio_java_intermediario(self):
+        resultado = exibir_desafio("java", "intermediario")
+        assert resultado is not None
+
+    def test_desafio_java_avancado(self):
+        resultado = exibir_desafio("java", "avancado")
         assert resultado is not None
 
 
@@ -81,3 +117,10 @@ class TestComandoCertificado:
     def test_codigo_tem_16_caracteres(self):
         codigo = _gerar_codigo("Ana", "python", "2024-01-01")
         assert len(codigo) == 16
+
+    def test_certificado_java(self):
+        cert = gerar_certificado("Maria Lima", "java_basico")
+        assert cert is not None
+        assert cert["nome"] == "Maria Lima"
+        assert cert["trilha_id"] == "java_basico"
+        assert len(cert["codigo_verificacao"]) == 16

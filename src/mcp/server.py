@@ -33,23 +33,28 @@ _DATA_DIR = Path(__file__).parent.parent.parent / "data"
 
 
 def _load_json(filename: str) -> dict:
+    """Carrega e retorna o conteúdo de um arquivo JSON da pasta data/."""
     with open(_DATA_DIR / filename, encoding="utf-8") as f:
         return json.load(f)
 
 
 def _trilhas() -> list[dict]:
+    """Retorna todas as trilhas do JSON."""
     return _load_json("trilhas.json")["trilhas"]
 
 
 def _desafios() -> list[dict]:
+    """Retorna todos os desafios do JSON."""
     return _load_json("desafios.json")["desafios"]
 
 
 def _buscar_trilha(tecnologia: str) -> dict | None:
+    """Busca uma trilha pelo id (case-insensitive)."""
     return next((t for t in _trilhas() if t["id"] == tecnologia.lower()), None)
 
 
 def _buscar_desafio(tecnologia: str, nivel: str) -> dict | None:
+    """Busca um desafio por tecnologia e nível (case-insensitive)."""
     return next(
         (d for d in _desafios() if d["tecnologia"] == tecnologia.lower() and d["nivel"] == nivel.lower()),
         None,
@@ -57,6 +62,7 @@ def _buscar_desafio(tecnologia: str, nivel: str) -> dict | None:
 
 
 def _gerar_codigo(nome: str, tecnologia: str, data_str: str) -> str:
+    """Gera código de verificação SHA-256 de 16 caracteres em maiúsculas."""
     raw = f"{nome.lower()}|{tecnologia.lower()}|{data_str}"
     return hashlib.sha256(raw.encode()).hexdigest()[:16].upper()
 
@@ -64,130 +70,134 @@ def _gerar_codigo(nome: str, tecnologia: str, data_str: str) -> str:
 # ── Servidor MCP ──────────────────────────────────────────────────────────────
 server = Server("geo-explorer")
 
-
-@server.list_tools()
-async def list_tools() -> list[mcp_types.Tool]:
-    """Declara as ferramentas disponíveis para clientes MCP."""
-    return [
-        mcp_types.Tool(
-            name="trilha",
-            description=(
-                "Retorna o plano de estudos completo de uma trilha de aprendizagem. "
-                "Inclui nome, descrição, nível, carga horária e todos os módulos com seus tópicos."
-            ),
-            inputSchema={
-                "type": "object",
-                "properties": {
-                    "tecnologia": {
-                        "type": "string",
-                        "description": "Identificador da tecnologia (ex: python, javascript, typescript, sql, docker).",
-                    }
-                },
-                "required": ["tecnologia"],
+_TOOLS = [
+    mcp_types.Tool(
+        name="trilha",
+        description=(
+            "Retorna o plano de estudos completo de uma trilha de aprendizagem. "
+            "Inclui nome, descrição, nível, carga horária, XP, badges e todos os módulos."
+        ),
+        inputSchema={
+            "type": "object",
+            "properties": {
+                "tecnologia": {
+                    "type": "string",
+                    "description": "ID da trilha (ex: python, java_basico, react, docker).",
+                }
             },
+            "required": ["tecnologia"],
+        },
+    ),
+    mcp_types.Tool(
+        name="desafio",
+        description=(
+            "Gera um desafio de código para a tecnologia e nível informados. "
+            "Retorna título, descrição, exemplo de entrada/saída e dicas."
         ),
-        mcp_types.Tool(
-            name="desafio",
-            description=(
-                "Gera um desafio de código para a tecnologia e nível informados. "
-                "Retorna título, descrição, exemplo de entrada/saída e dicas."
-            ),
-            inputSchema={
-                "type": "object",
-                "properties": {
-                    "tecnologia": {
-                        "type": "string",
-                        "description": "Identificador da tecnologia (ex: python, javascript, typescript, sql, docker).",
-                    },
-                    "nivel": {
-                        "type": "string",
-                        "enum": ["iniciante", "intermediario", "avancado"],
-                        "description": "Nível de dificuldade do desafio.",
-                    },
+        inputSchema={
+            "type": "object",
+            "properties": {
+                "tecnologia": {
+                    "type": "string",
+                    "description": "Tecnologia do desafio (ex: python, java, javascript).",
                 },
-                "required": ["tecnologia", "nivel"],
-            },
-        ),
-        mcp_types.Tool(
-            name="certificado",
-            description=(
-                "Gera um certificado fictício de conclusão de trilha para o estudante informado. "
-                "Retorna os dados do certificado incluindo um código único de verificação."
-            ),
-            inputSchema={
-                "type": "object",
-                "properties": {
-                    "nome": {
-                        "type": "string",
-                        "description": "Nome completo do estudante.",
-                    },
-                    "tecnologia": {
-                        "type": "string",
-                        "description": "Identificador da trilha concluída (ex: python, docker).",
-                    },
-                    "data_conclusao": {
-                        "type": "string",
-                        "description": "Data de conclusão no formato YYYY-MM-DD. Padrão: data atual.",
-                    },
+                "nivel": {
+                    "type": "string",
+                    "enum": ["iniciante", "intermediario", "avancado"],
+                    "description": "Nível de dificuldade do desafio.",
                 },
-                "required": ["nome", "tecnologia"],
             },
+            "required": ["tecnologia", "nivel"],
+        },
+    ),
+    mcp_types.Tool(
+        name="certificado",
+        description=(
+            "Gera um certificado fictício de conclusão de trilha para o estudante informado. "
+            "Retorna os dados do certificado incluindo código único de verificação."
         ),
-        mcp_types.Tool(
-            name="listar_trilhas",
-            description="Lista todas as trilhas de aprendizagem disponíveis no Geo-Explorer.",
-            inputSchema={"type": "object", "properties": {}},
-        ),
-    ]
+        inputSchema={
+            "type": "object",
+            "properties": {
+                "nome": {
+                    "type": "string",
+                    "description": "Nome completo do estudante.",
+                },
+                "tecnologia": {
+                    "type": "string",
+                    "description": "ID da trilha concluída (ex: python, java_basico).",
+                },
+                "data_conclusao": {
+                    "type": "string",
+                    "description": "Data de conclusão no formato YYYY-MM-DD. Padrão: data atual.",
+                },
+            },
+            "required": ["nome", "tecnologia"],
+        },
+    ),
+    mcp_types.Tool(
+        name="listar_trilhas",
+        description="Lista todas as trilhas de aprendizagem disponíveis no Geo-Explorer.",
+        inputSchema={"type": "object", "properties": {}},
+    ),
+]
 
 
-@server.call_tool()
-async def call_tool(name: str, arguments: dict) -> list[mcp_types.TextContent]:
-    """Despacha a chamada para a ferramenta correta."""
+async def _handle_list_tools(req: mcp_types.ListToolsRequest) -> mcp_types.ListToolsResult:
+    """Retorna a lista de ferramentas disponíveis."""
+    return mcp_types.ListToolsResult(tools=_TOOLS)
+
+
+async def _handle_call_tool(req: mcp_types.CallToolRequest) -> mcp_types.CallToolResult:
+    """Despacha a chamada para a ferramenta correta e retorna o resultado."""
+    name = req.params.name
+    arguments = dict(req.params.arguments or {})
+
+    def _text(content: str) -> mcp_types.CallToolResult:
+        return mcp_types.CallToolResult(content=[mcp_types.TextContent(type="text", text=content)])
 
     if name == "listar_trilhas":
         trilhas = _trilhas()
         resultado = [
-            {"id": t["id"], "nome": t["nome"], "nivel": t["nivel"], "carga_horaria": t["carga_horaria"]}
+            {
+                "id": t["id"],
+                "nome": t["nome"],
+                "nivel": t["nivel"],
+                "carga_horaria": t["carga_horaria"],
+                "xp_total": t.get("xp_total"),
+                "badges": t.get("badges", []),
+                "promocao": t.get("promocao"),
+                "vitalicio": t.get("vitalicio"),
+                "lives": t.get("lives"),
+            }
             for t in trilhas
         ]
-        return [mcp_types.TextContent(type="text", text=json.dumps(resultado, ensure_ascii=False, indent=2))]
+        return _text(json.dumps(resultado, ensure_ascii=False, indent=2))
 
     if name == "trilha":
         tecnologia = arguments.get("tecnologia", "")
         trilha = _buscar_trilha(tecnologia)
         if trilha is None:
             ids = [t["id"] for t in _trilhas()]
-            return [mcp_types.TextContent(
-                type="text",
-                text=f"Trilha '{tecnologia}' não encontrada. Disponíveis: {', '.join(ids)}",
-            )]
-        return [mcp_types.TextContent(type="text", text=json.dumps(trilha, ensure_ascii=False, indent=2))]
+            return _text(f"Trilha '{tecnologia}' não encontrada. Disponíveis: {', '.join(ids)}")
+        return _text(json.dumps(trilha, ensure_ascii=False, indent=2))
 
     if name == "desafio":
         tecnologia = arguments.get("tecnologia", "")
         nivel = arguments.get("nivel", "")
         desafio = _buscar_desafio(tecnologia, nivel)
         if desafio is None:
-            return [mcp_types.TextContent(
-                type="text",
-                text=f"Desafio não encontrado para '{tecnologia}' — nível '{nivel}'.",
-            )]
-        return [mcp_types.TextContent(type="text", text=json.dumps(desafio, ensure_ascii=False, indent=2))]
+            return _text(f"Desafio não encontrado para '{tecnologia}' — nível '{nivel}'.")
+        return _text(json.dumps(desafio, ensure_ascii=False, indent=2))
 
     if name == "certificado":
         nome = arguments.get("nome", "")
         tecnologia = arguments.get("tecnologia", "")
         data_str = arguments.get("data_conclusao") or date.today().isoformat()
-
         trilha = _buscar_trilha(tecnologia)
         if trilha is None:
             ids = [t["id"] for t in _trilhas()]
-            return [mcp_types.TextContent(
-                type="text",
-                text=f"Trilha '{tecnologia}' não encontrada. Disponíveis: {', '.join(ids)}",
-            )]
-
+            return _text(f"Trilha '{tecnologia}' não encontrada. Disponíveis: {', '.join(ids)}")
         codigo = _gerar_codigo(nome, tecnologia, data_str)
         certificado = {
             "nome": nome,
@@ -195,12 +205,17 @@ async def call_tool(name: str, arguments: dict) -> list[mcp_types.TextContent]:
             "trilha_nome": trilha["nome"],
             "nivel": trilha["nivel"],
             "carga_horaria": trilha["carga_horaria"],
+            "xp_total": trilha.get("xp_total"),
             "data_conclusao": data_str,
             "codigo_verificacao": codigo,
         }
-        return [mcp_types.TextContent(type="text", text=json.dumps(certificado, ensure_ascii=False, indent=2))]
+        return _text(json.dumps(certificado, ensure_ascii=False, indent=2))
 
-    return [mcp_types.TextContent(type="text", text=f"Ferramenta '{name}' não reconhecida.")]
+    return _text(f"Ferramenta '{name}' não reconhecida.")
+
+
+server.add_request_handler("tools/list", mcp_types.ListToolsRequest, _handle_list_tools)
+server.add_request_handler("tools/call", mcp_types.CallToolRequest, _handle_call_tool)
 
 
 async def _run() -> None:
